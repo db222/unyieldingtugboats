@@ -26,4 +26,8 @@ module.exports = function (app, express) {
   // inject our routers into their respective route files
   require('../hunts/huntRoutes.js')(huntRouter);
   require('../photos/photoRoutes.js')(photoRouter);
+
+  console.log('loaded middleware');
 };
+
+
