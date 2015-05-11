@@ -21,4 +21,4 @@ var port = process.env.PORT || 3000;
 app.listen(port);
 
 // serves public folder
-app.use(express.static('../client/scavengerhunt/www'));
+app.use(express.static('/dev/client/scavengerhunt/www'));
