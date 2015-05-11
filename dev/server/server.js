@@ -22,4 +22,4 @@ app.listen(port);
 console.log('listening on port: ', port);
 
 // serves public folder
-app.use(express.static('/dev/client/scavengerhunt/www'));
+app.use(express.static('./dev/client/scavengerhunt/www'));
