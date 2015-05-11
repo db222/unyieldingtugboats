@@ -1,0 +1,35 @@
+{
+  "name": "scavengerhunt",
+  "version": "0.1.0",
+  "description": "an app to help you explore any place through shared photo-driven scavenger hunts",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "exif": "^0.4.0",
+    "fs": "^0.0.2",
+    "body-parser": "^1.12.3",
+    "http": "^0.0.0",
+    "mongoose": "^4.0.2",
+    "path": "^0.11.14",
+    "request": "^2.55.0",
+    "mongodb": "^2.0.28",
+    "multer": "^0.1.8",
+    "request-promise": "^0.4.2",
+    "shortid": "^2.2.2",
+    "serve-static": "^1.9.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unyieldingtugboats/unyieldingtugboats.git"
+  },
+  "author": "unyielding tugboats",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unyieldingtugboats/unyieldingtugboats/issues"
+  },
+  "homepage": "https://github.com/unyieldingtugboats/unyieldingtugboats"
+}
