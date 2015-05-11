@@ -58,4 +58,5 @@ module.exports = function (app) {
 		photoUtils.fetchPhotosByDate(req, res, next);
 	});
 
+  console.log('loaded photo routes');
 };
