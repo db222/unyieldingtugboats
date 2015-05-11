@@ -10,7 +10,7 @@ angular.module('scavengerhunt.huntfactory', [])
         zipCode = '?zip='+zip;
       }
 
-      request.request('http://127.0.0.1:3000/api/hunts' + zipCode, null, function(data) {
+      request.request('/api/hunts' + zipCode, null, function(data) {
         callback(data);
       });
     }

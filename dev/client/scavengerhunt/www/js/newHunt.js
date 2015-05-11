@@ -43,7 +43,7 @@ angular.module('scavengerhunt.newhunts', [])
     console.log('info', info);
     newHunt.tags = []; // store tags about the hunt
 
-    request.request('http://localhost:3000/api/hunts/new', newHunt, function(response) {
+    request.request('/api/hunts/new', newHunt, function(response) {
       console.log('successfully added hunt? ', response);
       $state.reload(); 
     });
