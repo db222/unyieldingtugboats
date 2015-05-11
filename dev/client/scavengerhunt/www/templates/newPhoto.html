@@ -2,10 +2,18 @@
   <ion-header-bar class="bar-subheader bar-dark">
     <h1 class="title">New Photo</h1>
   </ion-header-bar>
-
+  
   <ion-content>
     <img class="photo" ng-src="{{lastPhoto}}">
-    <button class="button button-block">Save</button>
+    <div class="list">
+      <label class="item item-input">
+        <input ng-model="tags" type="text" placeholder="tags, separated by commas">
+      </label>
+      <label class="item item-input">
+        <input ng-model="info" type="text" placeholder="comments">
+      </label>
+    </div>
+    <button ng-click="uploadPhoto(tags, info)" class="button button-block">Save</button>
     <button class="button button-block">Cancel</button>
   </ion-content>
 </ion-view>

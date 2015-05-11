@@ -3,7 +3,7 @@
  *  - communicates with RequestFactory to grab photos from the database
  */
 angular.module('scavengerhunt.photofact', [])
-.factory('PhotoFact', function($http) {
+.factory('PhotoFact', function($http, $cordovaFile) {
   var photos = []; 
   return {
   // retrieve most recently added photos from the server
@@ -22,6 +22,16 @@ angular.module('scavengerhunt.photofact', [])
         })
         callback(photos);
       })
+    },
+
+    newPhoto: function(image, options, callback) {
+      $cordovaFile.uploadFile('http://localhost:3000/api/photos/new', image, options)
+      .success(function(response) {
+        console.log('photo sent!');
+      })
+      .error(function(err) {
+        console.log('invalid request');
+      });
     }
   }
 });

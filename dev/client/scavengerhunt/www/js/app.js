@@ -5,6 +5,7 @@
  * - defines AppController
  */
 angular.module('scavengerhunt', ['ionic',
+               'ngCordova',
                'requestFactory',
                'scavengerhunt.newhuntFactory',
                'scavengerhunt.photofact', 
@@ -73,7 +74,7 @@ angular.module('scavengerhunt', ['ionic',
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera) {
+.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera, $cordovaFile, PhotoFact) {
   // Main Application Controller.
    
   // Handles showing a modal. Currently unused, but keeping here for later reference.
@@ -110,6 +111,23 @@ angular.module('scavengerhunt', ['ionic',
     }, function(err) {
         console.err(err);
     }, { quality: 75, targetWidth: 320, targetHeight: 320, saveToPhotoAlbum: false });
+  };
+
+  $scope.uploadPhoto = function(tags, info) {
+    var params = {};
+    params.tags = tags;
+    params.info = info;
+    var imageURI = $scope.lastPhoto;
+
+    var options = new FileUploadOptions();
+    options.fileKey = 'file';
+    options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
+    options.mimeType = 'image/jpeg';
+    options.chunkedMode = false;
+    options.params = params;
+
+    PhotoFact.newPhoto(imageURI, options);
+
   };
 
 })

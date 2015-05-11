@@ -43,8 +43,10 @@ module.exports = function (app) {
                     }
                   }), photoUtils.fns);
 
+
   //serve the static image assets when url with shortid requested
 	app.get('/:filename', serveStatic('./uploads/'));
+
 
 	//post req to photos/ has zipcode information; return the json of 30 closest photos
   app.post('/', function(req, res, next){
@@ -56,5 +58,4 @@ module.exports = function (app) {
 		photoUtils.fetchPhotosByDate(req, res, next);
 	});
 
-  console.log('loaded photo routes');
 };
