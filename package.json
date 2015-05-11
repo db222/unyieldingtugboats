@@ -18,6 +18,10 @@
     "shortid": "^2.2.2",
     "serve-static": "^1.9.2"
   },
+  "engines": {
+          "node": "0.12.2",
+          "npm": "2.7.4"
+  }, 
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
