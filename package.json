@@ -28,6 +28,10 @@
     "node": "0.12.2",
     "npm": "2.7.4"
   },
+  "engines": {
+          "node": "0.12.2",
+          "npm": "2.7.4"
+  }, 
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
