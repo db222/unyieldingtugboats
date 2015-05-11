@@ -131,11 +131,19 @@ module.exports = {
 		//add .jpg to that filename and see if file exists
 		fs.exists('./uploads/' + filename + '.jpg', function(exists) {
 			if (exists){
-				req.url = filename + '.jpg'
+				req.url = filename + '.jpg';
 				next(); 
 			} else {
-				res.writeHead(404);
-				res.end('fs exists error');
+				fs.exists('./uploads/' + filename + '.JPG', function (exists) {
+					if (exists) {
+						req.url = filename + '.JPG';
+						next();
+					}
+					else {
+						res.writeHead(404);
+						res.end('fs exists error');
+					}
+				});
 			}
 		});
 	},
