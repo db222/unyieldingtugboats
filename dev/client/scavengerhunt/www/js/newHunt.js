@@ -1,41 +1,44 @@
+//Controller for views that allow users to create hunts in a certain zipcode
+//---------------------------------------------------------------------------
+
 angular.module('scavengerhunt.newhunts', [])
 .controller('NewHuntCtrl', function($scope, $state, $window, NewHuntFact, PhotoFact, request) {
-  // $scope.zipcode = null;
   $scope.zipcode = NewHuntFact.newHunt.zipcode;
 
+  //initializes the hunt by setting the zipcode
   $scope.makeHunt = function(zip) {
-    console.log('make hunt called');
     NewHuntFact.setZipCode(zip)
   };
 
-
+  //gets the photos from the entered zipcode and assigns them to a scope variable for display
   NewHuntFact.getPhotos(function(photos) {
     $scope.photos = photos; 
   });
 
+  //resents the hunt object to abort hunt creation
   $scope.resetHunt = function() {
-    console.log('$scope.resetHunt called');
     NewHuntFact.resetHunt(); 
   };
 
-
+  //adds photos to the hunt
   $scope.addPhoto = function(index) {
     NewHuntFact.addPhoto($scope.photos[index]);
-    if(!NewHuntFact.newHunt.cover) { //sets cover to be first photo added
+    //sets cover to be first photo added
+    if(!NewHuntFact.newHunt.cover) { 
       NewHuntFact.newHunt.cover = $scope.photos[index];
     }
     console.log('added!');
     console.log(NewHuntFact.newHunt);
   };
 
+  // Transfer relevant hunt data to new, properly
+  // formatted object, then send to server
   $scope.addHunt = function(info) {
     var newHunt = {};
 
-    // Transfer relevant hunt data to new, properly
-    // formatted object, then send to server
     newHunt.region = NewHuntFact.newHunt.zipcode;
     newHunt.cover = NewHuntFact.newHunt.cover;
-    newHunt.photos = []; // ids of all photos
+    newHunt.photos = []; 
     NewHuntFact.newHunt.photos.forEach(function(photo) {
       newHunt.photos.push(photo);
     });
@@ -49,6 +52,7 @@ angular.module('scavengerhunt.newhunts', [])
     });
   };
 
+  
   $scope.setZip = function() {
     $scope.zipcode = NewHuntFact.newHunt.zipcode || null;
   }

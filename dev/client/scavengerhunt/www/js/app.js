@@ -1,9 +1,10 @@
-/* app.js
- * - loads all other controllers and factories onto the page.
- * - handles application routing using ui-router
- * - asynchronously loads the google maps api
- * - defines AppController
- */
+//app.js
+//------------------
+ // loads all other controllers and factories onto the page.
+ // handles application routing using ui-router
+ // asynchronously loads the google maps api
+ // defines AppController
+ 
 angular.module('scavengerhunt', ['ionic',
                'ngCordova',
                'requestFactory',
@@ -57,6 +58,7 @@ angular.module('scavengerhunt', ['ionic',
     controller: 'NewHuntCtrl'
   })
 
+  // add new photo 
   .state('newphoto', {
     url: 'newphoto',
     templateUrl: 'templates/newPhoto.html'
@@ -77,7 +79,7 @@ angular.module('scavengerhunt', ['ionic',
 .controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera, $cordovaFile, PhotoFact) {
   // Main Application Controller.
    
-  // Handles showing a modal. Currently unused, but keeping here for later reference.
+  // Handles showing a modal. Currently unused, but may be used if you want to add a modal later.
   $ionicModal.fromTemplateUrl('templates/newhuntsmodal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -98,7 +100,7 @@ angular.module('scavengerhunt', ['ionic',
   });
 
 
-  // Toggles the side menu (top-right button, used for adding new hunts/photos
+  // Toggles the side menu (top-right button, used for adding new hunts/photos)
   $scope.toggleMenuRight = function() {
     $ionicSideMenuDelegate.toggleRight();
   }
@@ -112,6 +114,7 @@ angular.module('scavengerhunt', ['ionic',
         console.err(err);
     }, { quality: 75, targetWidth: 320, targetHeight: 320, saveToPhotoAlbum: false });
   };
+
 
   $scope.uploadPhoto = function(tags, info) {
     var params = {};

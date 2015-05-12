@@ -1,3 +1,6 @@
+//Factory to get hunts from the server to display to the user
+//----------------------------------------------------
+
 angular.module('scavengerhunt.huntfactory', [])
 .factory('HuntFact', function(request) {
   var hunts = []; 
@@ -10,6 +13,7 @@ angular.module('scavengerhunt.huntfactory', [])
         zipCode = '?zip='+zip;
       }
 
+      //uses request Factory to send request to back end
       request.request('/api/hunts' + zipCode, null, function(data) {
         callback(data);
       });

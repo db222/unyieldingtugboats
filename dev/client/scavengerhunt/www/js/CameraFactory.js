@@ -1,3 +1,6 @@
+// Camera factory
+//----------
+
 angular.module('scavengerhunt.camera', [])
 .factory('Camera', ['$q', function($q) {
   return {

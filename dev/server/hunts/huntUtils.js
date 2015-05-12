@@ -13,6 +13,7 @@ module.exports = {
     var queryObj = {};
     if (req.query.zip) {
       queryObj = {region: req.query.zip};
+      //retrieve hunts in specified zipcode
       Hunts.find(queryObj)
            .limit(10)
            .exec(function(err, results) { 
@@ -25,6 +26,7 @@ module.exports = {
               }
             });
     } else {
+      //retrieve most recently added hunts
       Hunts.find({})
            .limit(10)
            .sort({date: -1})

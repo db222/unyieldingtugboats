@@ -1,7 +1,8 @@
-/* PhotoFactory.js, PhotoFact
- *  - handles photo data
- *  - communicates with RequestFactory to grab photos from the database
- */
+// PhotoFactory.js, PhotoFact
+//---------------------------
+  // handles photo data
+  // communicates with RequestFactory to grab photos from the database
+ 
 angular.module('scavengerhunt.photofact', [])
 .factory('PhotoFact', function($http, $cordovaFile) {
   var photos = []; 

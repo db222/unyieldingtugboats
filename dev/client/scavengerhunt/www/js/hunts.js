@@ -1,7 +1,9 @@
-/* hunts.js, HuntsCtrl
- *  - gets hunt data from HuntFactory
- *  - uses modals to show individual hunt views
- */
+
+//hunts.js, HuntsCtrl
+//----------------------
+ // gets hunt data from HuntFactory
+ // uses modals to show individual hunt views
+
 angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps'])
 .controller('HuntsCtrl', function($scope, $ionicModal, HuntFact) {
   // hunt data from database
