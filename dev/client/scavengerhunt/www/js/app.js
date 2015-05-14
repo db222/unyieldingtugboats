@@ -1,32 +1,45 @@
-/* app.js
- * - loads all other controllers and factories onto the page.
- * - handles application routing using ui-router
- * - asynchronously loads the google maps api
- * - defines AppController
- */
+//app.js
+//------------------
+ // loads all other controllers and factories onto the page.
+ // handles application routing using ui-router
+ // asynchronously loads the google maps api
+ // defines AppController
+ 
 angular.module('scavengerhunt', ['ionic',
                'ngCordova',
                'requestFactory',
                'scavengerhunt.newhuntFactory',
                'scavengerhunt.photofact', 
                'scavengerhunt.huntfactory',
-               'scavengerhunt.camera',
                'scavengerhunt.photos',
                'scavengerhunt.hunts',
                'scavengerhunt.newhunts',
+               'scavengerhunt.login',
                'uiGmapgoogle-maps'])
 .config(function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/');
+  
+  openFB.init({appId: '371900856327943'});
 
   // hunts view (homepage)
-  $stateProvider.state('home', {
-    url: '/',
-    cache: false,
-    reload: true,
+  $stateProvider
+  .state('login', {
+    url: '/login',
+    // cache: false,
+    // reload: true,
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+  .state('home', {
+    url: 'home',
+    // cache: false,
+    // reload: true,
     templateUrl: 'templates/hunts.html',
     controller: 'HuntsCtrl'
   })
-
+  .state('profile', {
+    url: 'profile',
+    templateUrl: 'templates/profile.html'
+  })
   // photos view
   .state('pics', {
     url: 'pics',
@@ -57,10 +70,13 @@ angular.module('scavengerhunt', ['ionic',
     controller: 'NewHuntCtrl'
   })
 
+  // add new photo 
   .state('newphoto', {
     url: 'newphoto',
     templateUrl: 'templates/newPhoto.html'
   });
+
+  $urlRouterProvider.otherwise('login');
 
 })
 .config(function($compileProvider) {
@@ -74,10 +90,10 @@ angular.module('scavengerhunt', ['ionic',
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera, $cordovaFile, PhotoFact) {
+.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, $cordovaFile, PhotoFact) {
   // Main Application Controller.
-   
-  // Handles showing a modal. Currently unused, but keeping here for later reference.
+
+  // Handles showing a modal. Currently unused, but may be used if you want to add a modal later.
   $ionicModal.fromTemplateUrl('templates/newhuntsmodal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -86,10 +102,12 @@ angular.module('scavengerhunt', ['ionic',
   });
   
   $scope.openModal = function() {
+    console.log("showing modal");
     $scope.modal.show();
   };
 
   $scope.closeModal = function() {
+    console.log("hidt it");
     $scope.modal.hide();
   };
 
@@ -98,20 +116,16 @@ angular.module('scavengerhunt', ['ionic',
   });
 
 
-  // Toggles the side menu (top-right button, used for adding new hunts/photos
+  // Toggles the side menu (top-right button, used for adding new hunts/photos)
   $scope.toggleMenuRight = function() {
     $ionicSideMenuDelegate.toggleRight();
   }
 
   // camera
   $scope.getPhoto = function() {
-    Camera.getPicture().then(function(imageURI) {
-      console.log(imageURI);
-      $scope.lastPhoto = imageURI;
-    }, function(err) {
-        console.err(err);
-    }, { quality: 75, targetWidth: 320, targetHeight: 320, saveToPhotoAlbum: false });
+    
   };
+
 
   $scope.uploadPhoto = function(tags, info) {
     var params = {};

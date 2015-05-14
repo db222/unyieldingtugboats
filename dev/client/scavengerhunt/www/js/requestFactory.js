@@ -1,3 +1,5 @@
+//factory to handle requests to the server
+//-----------------------------------------
 angular.module('requestFactory', [])
 .factory('request', function($http) {
   return {

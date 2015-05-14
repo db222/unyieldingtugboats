@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>serverDocs.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>serverDocs.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+<span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="basic-server-set-up">Basic Server Set-up</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+<span class="hljs-keyword">var</span> app = express();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>connect to database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>mongoURI = process.env.MONGOLAB_URI || <span class="hljs-string">'mongodb://localhost/scavengerhunt'</span>;
+mongoose.connect(mongoURI);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>include route middleware</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">'./config/middleware.js'</span>)(app, express);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>listen on port 3000</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> port = process.env.PORT || <span class="hljs-number">3000</span>; 
+app.listen(port);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'listening on port: '</span>, port);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>serves public folder</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.use(express.static(<span class="hljs-string">'./dev/client/scavengerhunt/www'</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="configure-router-middleware">Configure Router Middleware</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> bodyParser  = <span class="hljs-built_in">require</span>(<span class="hljs-string">'body-parser'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(app, express)</span> </span>{
+
+  <span class="hljs-keyword">var</span> huntRouter = express.Router();
+  <span class="hljs-keyword">var</span> photoRouter = express.Router();
+
+  app.use(bodyParser.urlencoded({extended: <span class="hljs-literal">true</span>}));
+  app.use(bodyParser.json());</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Enable localhost to localhost connections (CORS)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.all(<span class="hljs-string">'/*'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span> </span>{
+    res.header(<span class="hljs-string">"Access-Control-Allow-Origin"</span>, <span class="hljs-string">"*"</span>);
+    res.header(<span class="hljs-string">"Access-Control-Allow-Headers"</span>, <span class="hljs-string">"origin, content-type, accept"</span>);
+    next();
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>use hunt router for all user request</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.use(<span class="hljs-string">'/api/hunts'</span>, huntRouter);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>user photo router for link request</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.use(<span class="hljs-string">'/api/photos'</span>, photoRouter);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>inject our routers into their respective route files</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-built_in">require</span>(<span class="hljs-string">'../hunts/huntRoutes.js'</span>)(huntRouter);
+  <span class="hljs-built_in">require</span>(<span class="hljs-string">'../photos/photoRoutes.js'</span>)(photoRouter);
+
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'loaded middleware'</span>);
+};
+
+
+<span class="hljs-keyword">var</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="hunt-database-schema">Hunt Database Schema</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>hunts collection will store hunts created by users; cover object is photo shown on home page; region is zipcode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> HuntSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+  cover: <span class="hljs-built_in">Object</span>,
+	photos: <span class="hljs-built_in">Array</span>,
+	info: <span class="hljs-built_in">String</span>, 
+	tags: <span class="hljs-built_in">Array</span>, 
+	region: <span class="hljs-built_in">Number</span>,
+	date: { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-built_in">Date</span>.now } 
+});
+
+<span class="hljs-built_in">module</span>.exports = mongoose.model(<span class="hljs-string">'Hunt'</span>, HuntSchema);<span class="hljs-keyword">var</span> huntUtils = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./huntUtils'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <h2 id="hunt-routes">Hunt Routes</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>app === huntRouter injected from middlware.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(app)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>post request to api/hunts/new will add a hunt to the database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.post(<span class="hljs-string">'/new'</span>, huntUtils.addHunt, huntUtils.fns);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>get request to api/hunts will retrieve hunts from the database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.get(<span class="hljs-string">'/'</span>, huntUtils.getHunts, huntUtils.fns);
+
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'loaded hunt routes'</span>);
+};<span class="hljs-keyword">var</span> Hunts = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./huntModel'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <h2 id="hunt-helper-functions">Hunt Helper Functions</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Get a list of hunts from the database, optional zip code, limit 10
+curl -i <a href="http://localhost:3000/api/hunts">http://localhost:3000/api/hunts</a>
+OR
+curl -i <a href="http://localhost:3000/api/hunts?zip=94536">http://localhost:3000/api/hunts?zip=94536</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getHunts: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span> </span>{
+    <span class="hljs-keyword">var</span> queryObj = {};
+    <span class="hljs-keyword">if</span> (req.query.zip) {
+      queryObj = {region: req.query.zip};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>retrieve hunts in specified zipcode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      Hunts.find(queryObj)
+           .limit(<span class="hljs-number">10</span>)
+           .exec(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, results)</span> </span>{ 
+              <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error fetching from Hunts DB'</span>);
+                next(err);
+              } <span class="hljs-keyword">else</span> {
+                res.queryResults = <span class="hljs-built_in">JSON</span>.stringify(results);
+                next();
+              }
+            });
+    } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>retrieve most recently added hunts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      Hunts.find({})
+           .limit(<span class="hljs-number">10</span>)
+           .sort({date: -<span class="hljs-number">1</span>})
+           .exec(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, results)</span> </span>{ 
+              <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error fetching from Hunts DB'</span>);
+                next(err);
+              } <span class="hljs-keyword">else</span> {
+                res.queryResults = <span class="hljs-built_in">JSON</span>.stringify(results);
+                next();
+              }
+            });
+    }
+
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Add a new hunt to the database
+curl -H “Content-Type: application/json” -X POST -d ‘{“info” : “infos about hunt”, “region” : 94536, “tags” : [ “tag”, “another tag” ], “photos” : [ “photo1_id”, “photo2_id” ]}’ <a href="http://localhost:3000/api/hunts/new">http://localhost:3000/api/hunts/new</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addHunt: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span> </span>{
+    <span class="hljs-built_in">console</span>.log(req.body);
+     Hunts.create(req.body, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+       <span class="hljs-keyword">if</span> (err) {
+         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error creating new hunt'</span>);
+         next(err);
+       } <span class="hljs-keyword">else</span> {
+         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'hunt was added'</span>);
+         next();
+       }
+    });
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>End request with proper code and response data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  fns: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span></span>{
+
+    <span class="hljs-keyword">if</span> (res.queryResults) {
+
+      res.writeHead(<span class="hljs-number">200</span>);
+      res.end(res.queryResults);
+
+    } <span class="hljs-keyword">else</span> {
+
+      res.writeHead(<span class="hljs-number">201</span>);
+      res.end(<span class="hljs-string">'Successfully added your hunt'</span>);
+
+    }
+
+  }
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <h2 id="photo-model-setup">Photo Model Setup</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
+
+<span class="hljs-keyword">var</span> PhotoSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+	_id: {
+	    type: <span class="hljs-built_in">String</span>,
+	    unique: <span class="hljs-literal">true</span>,
+	},
+	loc: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>[lng, lat]</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		type: [<span class="hljs-built_in">Number</span>],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>create the geospatial index</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		index: <span class="hljs-string">'2d'</span> 
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>orientation of the photo from exif data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	orientation: <span class="hljs-built_in">Number</span>,
+	tags: <span class="hljs-built_in">Array</span>,
+	info: <span class="hljs-built_in">String</span>, 
+	date: { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-built_in">Date</span>.now }
+
+});
+
+
+<span class="hljs-built_in">module</span>.exports = mongoose.model(<span class="hljs-string">'Photo'</span>, PhotoSchema);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <h2 id="setup-the-photo-routes-middleware">Setup the Photo Routes middleware</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> photoUtils = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./photoUtils'</span>);
+<span class="hljs-keyword">var</span> multer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'multer'</span>);
+<span class="hljs-keyword">var</span> ExifImage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'exif'</span>).ExifImage;
+<span class="hljs-keyword">var</span> serveStatic = <span class="hljs-built_in">require</span>(<span class="hljs-string">'serve-static'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>app === photoRouter injected from middlware.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(app)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>when a request comes in with a shortid, this will convert it into a filepath to the correct photo </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.param(<span class="hljs-string">'filename'</span>, photoUtils.createFilePath)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>on a post to photos/new upload the photo and rename the file with a shortid</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.post(<span class="hljs-string">'/new'</span>, multer({  dest: <span class="hljs-string">'./uploads/'</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>give file a short id for filename which will be also be used in _id field in database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    rename: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fieldname, filename, req, res)</span> </span>{
+                      <span class="hljs-keyword">return</span> photoUtils.generateShortId();
+                    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>as soon as the upload is complete, need to extract the exif data and store in the database
+the extracted exif data has gps info in DMS and the google maps API needs gps info 
+in decimal degrees. This fn first compiles a gpsDMS object which is passed into conversion
+helper functions, and the resulting gps object with lat and lng properties in decimal degrees is
+passed to the addPhotoToDb helper function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    onFileUploadComplete: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file, req, res)</span> </span>{
+                      <span class="hljs-keyword">new</span> ExifImage({ image : <span class="hljs-string">'./uploads/'</span> + file.name }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error, exifData)</span> </span>{
+                          <span class="hljs-keyword">if</span> (error)
+                              <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error: '</span>+error.message);
+                          <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">var</span> gpsDMS = {
+                              GPSLatitudeRef: exifData.gps.GPSLatitudeRef,
+                              GPSLatitude: exifData.gps.GPSLatitude,
+                              GPSLongitudeRef: exifData.gps.GPSLongitudeRef,
+                              GPSLongitude: exifData.gps.GPSLongitude
+                            }
+
+                            <span class="hljs-keyword">var</span> gps = photoUtils.makeDecDeg(gpsDMS);
+                            <span class="hljs-keyword">var</span> orientation = exifData.image.Orientation;
+                            photoUtils.addPhotoToDb(file.name, gps, orientation, req.body)<span class="hljs-comment">//add to database</span>
+                          }
+                      });
+                    }
+                  }), photoUtils.fns);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>serve the static image assets when url with shortid requested</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	app.get(<span class="hljs-string">'/:filename'</span>, serveStatic(<span class="hljs-string">'./uploads/'</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>post req to photos/ has zipcode information; return the json of 30 closest photos</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.post(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span></span>{
+	  photoUtils.getZipGPS(req.body.zipcode, req, res, next)	
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>get req to photos/ returns the json of the 30 most recently added photos </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	app.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span></span>{
+		photoUtils.fetchPhotosByDate(req, res, next);
+	});
+
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <h2 id="helper-functions-for-photo-route-middleware">Helper Functions for Photo route middleware</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> shortid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'shortid'</span>);
+<span class="hljs-keyword">var</span> Photo = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./photoModel'</span>);
+<span class="hljs-keyword">var</span> Zipcode = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./zipcodeModel'</span>);
+<span class="hljs-keyword">var</span> rp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request-promise'</span>);
+<span class="hljs-keyword">var</span> multer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'multer'</span>);
+<span class="hljs-keyword">var</span> ExifImage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'exif'</span>).ExifImage;
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>generates a shortId which associates the filename of the photo with its document in the database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	generateShortId : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> shortid.generate();
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>exif data is extracted in degree-minute-second format; this function converts d-m-s to decimal degree</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	convertDMStoDeg: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(dmsArray)</span></span>{
+		<span class="hljs-keyword">var</span> deg = dmsArray[<span class="hljs-number">0</span>];
+		<span class="hljs-keyword">var</span> min = dmsArray[<span class="hljs-number">1</span>];
+		<span class="hljs-keyword">var</span> sec = dmsArray[<span class="hljs-number">2</span>];
+
+		<span class="hljs-keyword">return</span> deg + (((min * <span class="hljs-number">60</span>) + sec)/<span class="hljs-number">3600</span>);
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>creates the [lng, lat] array to be stored in the loc field of the photo document</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	makeDecDeg: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(gps)</span></span>{
+		<span class="hljs-keyword">var</span> lat = <span class="hljs-keyword">this</span>.convertDMStoDeg(gps.GPSLatitude);
+		<span class="hljs-keyword">if</span> (gps.GPSLatitudeRef === <span class="hljs-string">'S'</span>){
+			lat *= -<span class="hljs-number">1</span>;
+		}
+		<span class="hljs-keyword">var</span> lng = <span class="hljs-keyword">this</span>.convertDMStoDeg(gps.GPSLongitude);
+		<span class="hljs-keyword">if</span> (gps.GPSLongitudeRef === <span class="hljs-string">'W'</span>){
+			lng *= -<span class="hljs-number">1</span>; 
+		}
+
+		<span class="hljs-keyword">return</span> [ lng.toFixed(<span class="hljs-number">6</span>), lat.toFixed(<span class="hljs-number">6</span>) ];
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>creates a document in the db that represents the photo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	addPhotoToDb : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(filename, gps, orientation, reqBody)</span></span>{
+		<span class="hljs-keyword">var</span> tags = reqBody.tags.split(<span class="hljs-string">','</span>);
+		<span class="hljs-keyword">var</span> info = reqBody.info;
+		Photo.create({
+			_id: filename.substring(<span class="hljs-number">0</span>, filename.indexOf(<span class="hljs-string">'.'</span>)),
+			loc: gps,
+			orientation: orientation,
+			tags: tags,
+			info: info
+		}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error, photo)</span> </span>{
+			<span class="hljs-keyword">if</span> (error) {
+				<span class="hljs-built_in">console</span>.log (<span class="hljs-string">'error'</span>);
+			}
+		});
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>this function will turn the zipcode on the request body
+into a json object and pass that object to get ‘/‘</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	getZipGPS: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zip, req, res, next)</span> </span>{
+		fetchPhotosByLoc = <span class="hljs-keyword">this</span>.fetchPhotosByLoc;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>first see if the zipLoc is already in the database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		Zipcode.find({ <span class="hljs-string">'zipcode'</span>: zip }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, result)</span> </span>{
+			<span class="hljs-keyword">if</span> (result.length){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>if it is, retrieve it and then fetchPhotosByLoc</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'zip in db; result: '</span>, result[<span class="hljs-number">0</span>].loc);
+				fetchPhotosByLoc(result[<span class="hljs-number">0</span>].loc, req, res, next);
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>if it isnt, request it and store it then fetchPhotosByLoc</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'zip not in db, grabbing it from goog'</span>);
+				rp(<span class="hljs-string">'http://maps.googleapis.com/maps/api/geocode/json?address='</span> + zip).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(body)</span></span>{
+					<span class="hljs-keyword">var</span> result = <span class="hljs-built_in">JSON</span>.parse(body);
+			    lat = result.results[<span class="hljs-number">0</span>].geometry.location.lat;
+			    lng = result.results[<span class="hljs-number">0</span>].geometry.location.lng;
+					<span class="hljs-keyword">var</span> zipLoc = {
+			                   <span class="hljs-string">"lat"</span> : lat,
+			             			 <span class="hljs-string">"lng"</span> : lng
+					              };
+					Zipcode.create({
+						zipcode: zip,
+						loc: zipLoc
+					});
+				  fetchPhotosByLoc(zipLoc, req, res, next);
+				});
+			}
+		})
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>sends a response with JSON representation of the 30 closest photos to the location of the zipcode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	fetchPhotosByLoc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zipLoc, req, res, next)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>set limit to be used to determine number of photos returned to 30</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> limit = <span class="hljs-number">30</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>set maxDistance in decimal degrees to determine the max distance of photos returned</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> maxDistance = .<span class="hljs-number">059</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>create an array of the longitude and latitude of the location of the zipcode 
+(which was determined from google geocode and passed in)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> zipCoords = []; 
+		zipCoords.push(zipLoc.lng); 
+		zipCoords.push(zipLoc.lat);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>query the database using the $near geospatial query</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		Photo.find({
+			loc: {
+				$near: zipCoords,
+				$maxDistance: maxDistance
+			}
+		}).limit(limit).exec(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, photos)</span> </span>{
+			<span class="hljs-keyword">if</span> (err) {
+				<span class="hljs-keyword">return</span> res.status(<span class="hljs-number">500</span>).json(err);
+			}
+			res.status(<span class="hljs-number">200</span>).json(photos);
+		})
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>sends a response with JSON representation of the 30 most recently added photos</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	fetchPhotosByDate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next)</span> </span>{
+		<span class="hljs-keyword">var</span> limit = <span class="hljs-number">30</span>; 
+		Photo.find({}).limit(limit).sort({date: -<span class="hljs-number">1</span>}).exec(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, photos)</span> </span>{
+			<span class="hljs-keyword">if</span> (err) {
+				<span class="hljs-keyword">return</span> res.status(<span class="hljs-number">500</span>).json(err);
+			}
+			res.status(<span class="hljs-number">200</span>).json(photos);
+		});
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>create a filepath based on the filename parameter of the URL and see if that photo exists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	createFilePath: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res, next, filename)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>add .jpg to that filename and see if file exists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		fs.exists(<span class="hljs-string">'./uploads/'</span> + filename + <span class="hljs-string">'.jpg'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exists)</span> </span>{
+			<span class="hljs-keyword">if</span> (exists){
+				req.url = filename + <span class="hljs-string">'.jpg'</span>;
+				next(); 
+			} <span class="hljs-keyword">else</span> {
+				fs.exists(<span class="hljs-string">'./uploads/'</span> + filename + <span class="hljs-string">'.JPG'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exists)</span> </span>{
+					<span class="hljs-keyword">if</span> (exists) {
+						req.url = filename + <span class="hljs-string">'.JPG'</span>;
+						next();
+					}
+					<span class="hljs-keyword">else</span> {
+						res.writeHead(<span class="hljs-number">404</span>);
+						res.end(<span class="hljs-string">'fs exists error'</span>);
+					}
+				});
+			}
+		});
+	},
+	
+	fns : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res, next)</span></span>{
+		res.writeHead(<span class="hljs-number">300</span>);
+		res.end(<span class="hljs-string">'you uploaded a photo'</span>);
+	}
+
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <h2 id="zipcode-model-setup">Zipcode Model Setup</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>the zipcodes collection will cache zipcode GPS coordinates retrieved from google</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> ZipcodeSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+	zipcode: {
+		type: <span class="hljs-built_in">Number</span>,
+		unique: <span class="hljs-literal">true</span>
+	},
+	loc: {
+		lat: <span class="hljs-built_in">Number</span>,
+		lng: <span class="hljs-built_in">Number</span>
+	}, 
+});
+
+<span class="hljs-built_in">module</span>.exports = mongoose.model(<span class="hljs-string">'Zipcode'</span>, ZipcodeSchema);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

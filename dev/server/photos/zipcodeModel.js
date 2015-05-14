@@ -2,6 +2,7 @@
 //--------------------
 var mongoose = require('mongoose');
 
+//the zipcodes collection will cache zipcode GPS coordinates retrieved from google
 var ZipcodeSchema = new mongoose.Schema({
 	zipcode: {
 		type: Number,

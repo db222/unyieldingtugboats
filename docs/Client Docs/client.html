@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>client.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>client.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="camera-factory">Camera factory</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.module(<span class="hljs-string">'scavengerhunt.camera'</span>, [])
+.factory(<span class="hljs-string">'Camera'</span>, [<span class="hljs-string">'$q'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($q)</span> </span>{
+  <span class="hljs-keyword">return</span> {
+    getPicture: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+      <span class="hljs-keyword">var</span> q = $q.defer();
+
+      navigator.camera.getPicture(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>something with camera</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        q.resolve(result);
+      }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+        q.reject(err);
+      }, options);
+
+      <span class="hljs-keyword">return</span> q.promise;
+    }
+  }
+}]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="factory-to-get-hunts-from-the-server-to-display-to-the-user">Factory to get hunts from the server to display to the user</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.module(<span class="hljs-string">'scavengerhunt.huntfactory'</span>, [])
+.factory(<span class="hljs-string">'HuntFact'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(request)</span> </span>{
+  <span class="hljs-keyword">var</span> hunts = []; 
+  <span class="hljs-keyword">return</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>get hunts from the database by making a request to api/hunts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getHunts: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zip, callback)</span> </span>{
+      <span class="hljs-keyword">var</span> zipCode = <span class="hljs-string">''</span>;
+      <span class="hljs-keyword">if</span> (zip) {
+        zipCode = <span class="hljs-string">'?zip='</span>+zip;
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>uses request Factory to send request to back end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      request.request(<span class="hljs-string">'/api/hunts'</span> + zipCode, <span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{
+        callback(data);
+      });
+    }
+
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="photofactory-js-photofact">PhotoFactory.js, PhotoFact</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>handles photo data
+communicates with RequestFactory to grab photos from the database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> 
+angular.module(<span class="hljs-string">'scavengerhunt.photofact'</span>, [])
+.factory(<span class="hljs-string">'PhotoFact'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($http, $cordovaFile)</span> </span>{
+  <span class="hljs-keyword">var</span> photos = []; 
+  <span class="hljs-keyword">return</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>retrieve most recently added photos from the server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getPhotos: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> </span>{
+      $http({
+        method:<span class="hljs-string">'GET'</span>, 
+        url: <span class="hljs-string">'/api/photos'</span>
+      })
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span></span>{
+        photos = response.data.slice();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>for each photo in the photos, add  src, lon, and lat properties </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        photos.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photo)</span> </span>{
+          photo.src = <span class="hljs-string">'/api/photos/'</span> + photo._id,
+          photo.lon = photo.loc[<span class="hljs-number">0</span>],
+          photo.lat = photo.loc[<span class="hljs-number">1</span>]
+        })
+        callback(photos);
+      })
+    },
+
+    newPhoto: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(image, options, callback)</span> </span>{
+      $cordovaFile.uploadFile(<span class="hljs-string">'http://localhost:3000/api/photos/new'</span>, image, options)
+      .success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'photo sent!'</span>);
+      })
+      .error(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'invalid request'</span>);
+      });
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="app-js">app.js</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>loads all other controllers and factories onto the page.
+handles application routing using ui-router
+asynchronously loads the google maps api
+defines AppController</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> 
+angular.module(<span class="hljs-string">'scavengerhunt'</span>, [<span class="hljs-string">'ionic'</span>,
+               <span class="hljs-string">'ngCordova'</span>,
+               <span class="hljs-string">'requestFactory'</span>,
+               <span class="hljs-string">'scavengerhunt.newhuntFactory'</span>,
+               <span class="hljs-string">'scavengerhunt.photofact'</span>, 
+               <span class="hljs-string">'scavengerhunt.huntfactory'</span>,
+               <span class="hljs-string">'scavengerhunt.camera'</span>,
+               <span class="hljs-string">'scavengerhunt.photos'</span>,
+               <span class="hljs-string">'scavengerhunt.hunts'</span>,
+               <span class="hljs-string">'scavengerhunt.newhunts'</span>,
+               <span class="hljs-string">'uiGmapgoogle-maps'</span>])
+.config(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($stateProvider, $urlRouterProvider)</span> </span>{
+  $urlRouterProvider.otherwise(<span class="hljs-string">'/'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>hunts view (homepage)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $stateProvider.state(<span class="hljs-string">'home'</span>, {
+    url: <span class="hljs-string">'/'</span>,
+    cache: <span class="hljs-literal">false</span>,
+    reload: <span class="hljs-literal">true</span>,
+    templateUrl: <span class="hljs-string">'templates/hunts.html'</span>,
+    controller: <span class="hljs-string">'HuntsCtrl'</span>
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>photos view</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  .state(<span class="hljs-string">'pics'</span>, {
+    url: <span class="hljs-string">'pics'</span>,
+    templateUrl: <span class="hljs-string">'templates/pics.html'</span>,
+    controller: <span class="hljs-string">'PhotosCtrl'</span>
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>the first form for creating a new hunt</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  .state(<span class="hljs-string">'newhunt'</span>, {
+    url: <span class="hljs-string">'newhunt'</span>,
+    templateUrl: <span class="hljs-string">'templates/newhuntsmodal.html'</span>,
+    controller: <span class="hljs-string">'NewHuntCtrl'</span>
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>the photo selection view</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  .state(<span class="hljs-string">'newhuntphotos'</span>, {
+    url: <span class="hljs-string">'newhunt/photoSelect'</span>,
+    cache: <span class="hljs-literal">false</span>,
+    templateUrl: <span class="hljs-string">'templates/newHuntPhotoSelect.html'</span>,
+    controller: <span class="hljs-string">'NewHuntCtrl'</span>
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>review and save hunt. shows photo map.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  .state(<span class="hljs-string">'newhuntreview'</span>, {
+    url: <span class="hljs-string">'newhunt/review'</span>,
+    cache: <span class="hljs-literal">false</span>,
+    templateUrl: <span class="hljs-string">'templates/newHuntReview.html'</span>,
+    controller: <span class="hljs-string">'NewHuntCtrl'</span>
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>add new photo </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  .state(<span class="hljs-string">'newphoto'</span>, {
+    url: <span class="hljs-string">'newphoto'</span>,
+    templateUrl: <span class="hljs-string">'templates/newPhoto.html'</span>
+  });
+
+})
+.config(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($compileProvider)</span> </span>{
+  $compileProvider.imgSrcSanitizationWhitelist(<span class="hljs-regexp">/^\s*(https?|ftp|mailto|file|tel):/</span>);
+})
+.config(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(uiGmapGoogleMapApiProvider)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>asynchronously load the google maps api, as instructed by angular-google-maps.
+(see their docs for reference)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  uiGmapGoogleMapApiProvider.configure({
+    v: <span class="hljs-string">'3.17'</span>,
+    libraries: <span class="hljs-string">'weather,geometry,visualization'</span>
+  });
+})
+.controller(<span class="hljs-string">'AppCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera, $cordovaFile, PhotoFact)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Main Application Controller.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Handles showing a modal. Currently unused, but may be used if you want to add a modal later.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $ionicModal.fromTemplateUrl(<span class="hljs-string">'templates/newhuntsmodal.html'</span>, {
+    scope: $scope,
+    animation: <span class="hljs-string">'slide-in-up'</span>
+  }).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modal)</span> </span>{
+    $scope.modal = modal;
+  });
+  
+  $scope.openModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.show();
+  };
+
+  $scope.closeModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.hide();
+  };
+
+  $scope.$on(<span class="hljs-string">'$destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.remove();
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Toggles the side menu (top-right button, used for adding new hunts/photos)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.toggleMenuRight = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $ionicSideMenuDelegate.toggleRight();
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>camera</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.getPhoto = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    Camera.getPicture().then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(imageURI)</span> </span>{
+      <span class="hljs-built_in">console</span>.log(imageURI);
+      $scope.lastPhoto = imageURI;
+    }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+        <span class="hljs-built_in">console</span>.err(err);
+    }, { quality: <span class="hljs-number">75</span>, targetWidth: <span class="hljs-number">320</span>, targetHeight: <span class="hljs-number">320</span>, saveToPhotoAlbum: <span class="hljs-literal">false</span> });
+  };
+
+
+  $scope.uploadPhoto = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tags, info)</span> </span>{
+    <span class="hljs-keyword">var</span> params = {};
+    params.tags = tags;
+    params.info = info;
+    <span class="hljs-keyword">var</span> imageURI = $scope.lastPhoto;
+
+    <span class="hljs-keyword">var</span> options = <span class="hljs-keyword">new</span> FileUploadOptions();
+    options.fileKey = <span class="hljs-string">'file'</span>;
+    options.fileName = imageURI.substr(imageURI.lastIndexOf(<span class="hljs-string">'/'</span>)+<span class="hljs-number">1</span>);
+    options.mimeType = <span class="hljs-string">'image/jpeg'</span>;
+    options.chunkedMode = <span class="hljs-literal">false</span>;
+    options.params = params;
+
+    PhotoFact.newPhoto(imageURI, options);
+
+  };
+
+})
+.run(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($ionicPlatform)</span> </span>{
+  $ionicPlatform.ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+for form inputs)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.cordova &amp;&amp; <span class="hljs-built_in">window</span>.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(<span class="hljs-literal">true</span>);
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <h2 id="hunts-js-huntsctrl">hunts.js, HuntsCtrl</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>gets hunt data from HuntFactory
+uses modals to show individual hunt views</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.module(<span class="hljs-string">'scavengerhunt.hunts'</span>, [<span class="hljs-string">'uiGmapgoogle-maps'</span>])
+.controller(<span class="hljs-string">'HuntsCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope, $ionicModal, HuntFact)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>hunt data from database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  HuntFact.getHunts(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(hunts)</span> </span>{
+    $scope.hunts = hunts
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Get all hunts from certain zip code</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.filterByZip = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zip)</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">String</span>(zip).match(<span class="hljs-regexp">/^[0-9]{5}$/</span>)) {
+      HuntFact.getHunts(<span class="hljs-built_in">Number</span>(zip), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(hunts)</span> </span>{
+        $scope.hunts = hunts;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"scope.hunts: "</span>, $scope.hunts);
+      });
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'please enter valid zip code'</span>);
+    }
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>modal for individual views</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $ionicModal.fromTemplateUrl(<span class="hljs-string">'templates/huntInfo.html'</span>, {
+    scope: $scope,
+    animation: <span class="hljs-string">'slide-in-up'</span>
+  }).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modal)</span> </span>{
+    $scope.modal = modal;
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>selectedHunt is set when modal is opened</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.selectedHunt = <span class="hljs-literal">null</span>;
+
+  $scope.openModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index)</span> </span>{
+    $scope.selectedHunt = $scope.hunts[index];
+    $scope.setMap($scope.selectedHunt.cover.lat, $scope.selectedHunt.cover.lon);
+    $scope.modal.show();
+  };
+  
+  $scope.closeModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.hide();
+  };
+  
+  $scope.$on(<span class="hljs-string">'$destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.remove();
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>initializes the map and its markers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.map = {zoom: <span class="hljs-number">14</span>};
+  $scope.map.markers = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>adds markers for each photo selected based on their location data; auto centers and fits the 
+map based on the markers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.setMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(lat, lon)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>set markers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; $scope.selectedHunt.photos.length; i++) {
+      <span class="hljs-keyword">var</span> marker = {
+            id: i,
+            latitude: $scope.selectedHunt.photos[i].lat,
+            longitude: $scope.selectedHunt.photos[i].lon,
+            options: {},
+            fit : <span class="hljs-literal">true</span>
+      };
+      $scope.map.markers.push(marker);
+    }
+
+    <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">new</span> google.maps.LatLngBounds();
+    $scope.map.markers.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(marker)</span></span>{
+      <span class="hljs-keyword">var</span> position = <span class="hljs-keyword">new</span> google.maps.LatLng(marker.latitude, marker.longitude)
+      bounds.extend(position)
+    });
+
+    <span class="hljs-keyword">var</span> centerHolder = bounds.getCenter(); 
+
+    $scope.map.center = {
+      longitude: centerHolder.F,
+      latitude: centerHolder.A
+    };
+  };  
+})
+.directive(<span class="hljs-string">'rotate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> {
+            restrict: <span class="hljs-string">'A'</span>,
+            link: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, element, attrs)</span> </span>{
+              <span class="hljs-keyword">var</span> r = <span class="hljs-string">'rotate(0deg)'</span>
+              <span class="hljs-keyword">if</span> (attrs.orientation === <span class="hljs-string">'6'</span>){
+                r = <span class="hljs-string">'rotate(90deg)'</span>; 
+                element.css({
+                  <span class="hljs-string">'-moz-transform'</span>: r,
+                  <span class="hljs-string">'-webkit-transform'</span>: r,
+                  <span class="hljs-string">'-o-transform'</span>: r,
+                  <span class="hljs-string">'-ms-transform'</span>: r,
+                });
+              } 
+            }
+        }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <h2 id="controller-for-views-that-allow-users-to-create-hunts-in-a-certain-zipcode">Controller for views that allow users to create hunts in a certain zipcode</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.module(<span class="hljs-string">'scavengerhunt.newhunts'</span>, [])
+.controller(<span class="hljs-string">'NewHuntCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope, $state, $window, NewHuntFact, PhotoFact, request)</span> </span>{
+  $scope.zipcode = NewHuntFact.newHunt.zipcode;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>initializes the hunt by setting the zipcode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.makeHunt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zip)</span> </span>{
+    NewHuntFact.setZipCode(zip)
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>gets the photos from the entered zipcode and assigns them to a scope variable for display</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  NewHuntFact.getPhotos(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photos)</span> </span>{
+    $scope.photos = photos; 
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>resents the hunt object to abort hunt creation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.resetHunt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    NewHuntFact.resetHunt(); 
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>adds photos to the hunt</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.addPhoto = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index)</span> </span>{
+    NewHuntFact.addPhoto($scope.photos[index]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>sets cover to be first photo added</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!NewHuntFact.newHunt.cover) { 
+      NewHuntFact.newHunt.cover = $scope.photos[index];
+    }
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'added!'</span>);
+    <span class="hljs-built_in">console</span>.log(NewHuntFact.newHunt);
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Transfer relevant hunt data to new, properly
+formatted object, then send to server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.addHunt = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(info)</span> </span>{
+    <span class="hljs-keyword">var</span> newHunt = {};
+
+    newHunt.region = NewHuntFact.newHunt.zipcode;
+    newHunt.cover = NewHuntFact.newHunt.cover;
+    newHunt.photos = []; 
+    NewHuntFact.newHunt.photos.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photo)</span> </span>{
+      newHunt.photos.push(photo);
+    });
+    newHunt.info = info || <span class="hljs-string">'An awesome scavenger hunt!'</span>; <span class="hljs-comment">// store info/description about the hunt</span>
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'info'</span>, info);
+    newHunt.tags = []; <span class="hljs-comment">// store tags about the hunt</span>
+
+    request.request(<span class="hljs-string">'/api/hunts/new'</span>, newHunt, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'successfully added hunt? '</span>, response);
+      $state.reload(); 
+    });
+  };
+
+  
+  $scope.setZip = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.zipcode = NewHuntFact.newHunt.zipcode || <span class="hljs-literal">null</span>;
+  }
+
+  $scope.map = { center: { latitude: <span class="hljs-number">37</span>, longitude: -<span class="hljs-number">122</span> }, zoom: <span class="hljs-number">19</span> };
+
+  $scope.map.markers = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>adds markers for each photo selected based on their location data; auto centers and fits the 
+map based on the markers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.setMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span>(NewHuntFact.newHunt.photos) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>set markers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; NewHuntFact.newHunt.photos.length; i++) {
+        <span class="hljs-keyword">var</span> marker = {
+              id: i,
+              latitude: NewHuntFact.newHunt.photos[i].lat,
+              longitude: NewHuntFact.newHunt.photos[i].lon,
+              options: {}
+        };
+        $scope.map.markers.push(marker);
+      }
+      <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">new</span> google.maps.LatLngBounds();
+      $scope.map.markers.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(marker)</span></span>{
+        <span class="hljs-keyword">var</span> position = <span class="hljs-keyword">new</span> google.maps.LatLng(marker.latitude, marker.longitude)
+        bounds.extend(position)
+      });
+
+      <span class="hljs-keyword">var</span> centerHolder = bounds.getCenter(); 
+
+      $scope.map.center = {
+        longitude: centerHolder.F,
+        latitude: centerHolder.A
+      };
+    }
+  }; 
+
+  $scope.setMap();
+  $scope.setZip();
+})
+.directive(<span class="hljs-string">'rotate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> {
+            restrict: <span class="hljs-string">'A'</span>,
+            link: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, element, attrs)</span> </span>{
+              <span class="hljs-keyword">var</span> r = <span class="hljs-string">'rotate(0deg)'</span>
+              <span class="hljs-keyword">if</span> (attrs.orientation === <span class="hljs-string">'6'</span>){
+                r = <span class="hljs-string">'rotate(90deg)'</span>; 
+                element.css({
+                  <span class="hljs-string">'-moz-transform'</span>: r,
+                  <span class="hljs-string">'-webkit-transform'</span>: r,
+                  <span class="hljs-string">'-o-transform'</span>: r,
+                  <span class="hljs-string">'-ms-transform'</span>: r,
+                });
+              } 
+            }
+        }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <h2 id="new-hunt-factory">New Hunt Factory</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.module(<span class="hljs-string">'scavengerhunt.newhuntFactory'</span>, [])
+.factory(<span class="hljs-string">'NewHuntFact'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($http)</span> </span>{
+  <span class="hljs-keyword">var</span> photos = []; 
+  <span class="hljs-keyword">return</span> {
+    newHunt: {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>adds a photo to the hunt</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    addPhoto: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photo)</span> </span>{
+      <span class="hljs-keyword">this</span>.newHunt.photos = <span class="hljs-keyword">this</span>.newHunt.photos || [];
+      <span class="hljs-keyword">this</span>.newHunt.photos.push(photo);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>sets the zipcode of the hunt</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    setZipCode: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zip)</span> </span>{
+      <span class="hljs-keyword">this</span>.newHunt = {};
+      <span class="hljs-keyword">this</span>.newHunt.zipcode = zip;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>gets the appropriate photos near the hunt zipcode from the server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getPhotos: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span></span>{
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.newHunt.zipcode){
+        $http({
+          method:<span class="hljs-string">'POST'</span>, 
+          url: <span class="hljs-string">'/api/photos'</span>,
+          data: { zipcode: <span class="hljs-keyword">this</span>.newHunt.zipcode}
+        })
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span></span>{
+          photos = response.data.slice();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>for each photo in the photos, add  src, lon, and lat properties </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          photos.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photo)</span> </span>{
+            photo.src = <span class="hljs-string">'/api/photos/'</span> + photo._id,
+            photo.lon = photo.loc[<span class="hljs-number">0</span>],
+            photo.lat = photo.loc[<span class="hljs-number">1</span>]
+          })
+          callback(photos)
+        })
+      }
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>resets the hunt object and photos array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    resetHunt: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">this</span>.newHunt = {};
+      photos = [];
+    }
+  }  
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <h2 id="photos-js-photosctrl">photos.js, PhotosCtrl</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>handles functionality for the photo view
+uses modals to display single photo view</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> 
+angular.module(<span class="hljs-string">'scavengerhunt.photos'</span>, [])
+.controller(<span class="hljs-string">'PhotosCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope, $ionicModal, PhotoFact, $ionicLoading)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>get photos from factory</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  PhotoFact.getPhotos(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(photos)</span> </span>{
+    $scope.photos = photos; 
+  })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>create modal for single photo view  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $ionicModal.fromTemplateUrl(<span class="hljs-string">'templates/picInfo.html'</span>, {
+    scope: $scope,
+    animation: <span class="hljs-string">'slide-in-up'</span>
+  }).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modal)</span> </span>{
+    $scope.modal = modal;
+  });
+
+  $scope.openModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>on opening modal, set the selected photo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.selectedPhoto = $scope.photos[index];
+    $scope.setMap($scope.selectedPhoto.lat, $scope.selectedPhoto.lon);
+    $scope.modal.show();
+  };
+  $scope.closeModal = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.hide();
+  };
+  $scope.$on(<span class="hljs-string">'$destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.modal.remove();
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>create photo map with default locations</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.map = {zoom: <span class="hljs-number">16</span>};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>selected photo is set when a modal is opened</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.selectedPhoto = <span class="hljs-literal">null</span>;
+
+  $scope.marker = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>set location map based on selected photo information</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.setMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(lat, lon)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>set marker</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.marker = {
+      id: <span class="hljs-number">0</span>,
+      coords: {
+        latitude: lat,
+        longitude: lon
+      }
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>determine center of map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">new</span> google.maps.LatLngBounds();
+    <span class="hljs-keyword">var</span> position = <span class="hljs-keyword">new</span> google.maps.LatLng($scope.marker.coords.latitude, $scope.marker.coords.longitude)
+    bounds.extend(position)
+    <span class="hljs-keyword">var</span> centerHolder = bounds.getCenter();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>set center of map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.map.center = {
+      longitude: centerHolder.F,
+      latitude: centerHolder.A
+    };
+  }
+})
+.directive(<span class="hljs-string">'rotate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> {
+            restrict: <span class="hljs-string">'A'</span>,
+            link: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, element, attrs)</span> </span>{
+              <span class="hljs-keyword">var</span> r = <span class="hljs-string">'rotate(0deg)'</span>
+              <span class="hljs-keyword">if</span> (attrs.orientation === <span class="hljs-string">'6'</span>){
+                r = <span class="hljs-string">'rotate(90deg)'</span>; 
+                element.css({
+                  <span class="hljs-string">'-moz-transform'</span>: r,
+                  <span class="hljs-string">'-webkit-transform'</span>: r,
+                  <span class="hljs-string">'-o-transform'</span>: r,
+                  <span class="hljs-string">'-ms-transform'</span>: r,
+                });
+              } 
+            }
+        }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <h2 id="factory-to-handle-requests-to-the-server">factory to handle requests to the server</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>angular.module(<span class="hljs-string">'requestFactory'</span>, [])
+.factory(<span class="hljs-string">'request'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($http)</span> </span>{
+  <span class="hljs-keyword">return</span> {
+    request: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, data, callback)</span> </span>{
+      <span class="hljs-keyword">if</span> (data) {
+        $http.post(url, data)
+        .success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+          callback(response);
+        })
+        .error(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error: Unable to post data to server'</span>);
+        });
+      } <span class="hljs-keyword">else</span> {
+        $http.get(url)
+        .success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+          callback(response);
+        })
+        .error(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error: Unable to get data from server'</span>);
+        });
+      }
+    }
+  }
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

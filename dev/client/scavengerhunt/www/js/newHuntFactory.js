@@ -14,9 +14,10 @@ angular.module('scavengerhunt.newhuntFactory', [])
     },
 
     //sets the zipcode of the hunt
-    setZipCode: function(zip) {
+    setZipCode: function(zip, radius) {
       this.newHunt = {};
       this.newHunt.zipcode = zip;
+      this.newHunt.radius = radius;
     },
 
 
@@ -25,14 +26,14 @@ angular.module('scavengerhunt.newhuntFactory', [])
       if (this.newHunt.zipcode){
         $http({
           method:'POST', 
-          url: 'http://localhost:3000/api/photos',
-          data: { zipcode: this.newHunt.zipcode}
+          url: 'http://johnpizzo.me:3000/api/photos',
+          data: { zipcode: this.newHunt.zipcode, radius : this.newHunt.radius}
         })
         .then(function(response){
           photos = response.data.slice(); 
           //for each photo in the photos, add  src, lon, and lat properties 
           photos.forEach(function(photo) {
-            photo.src = 'http://localhost:3000/api/photos/' + photo._id,
+            photo.src = '/api/photos/' + photo._id,
             photo.lon = photo.loc[0],
             photo.lat = photo.loc[1]
           })
