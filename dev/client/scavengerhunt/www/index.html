@@ -32,6 +32,8 @@
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="cordova.js"></script>
 
+    <script src="lib/openfb.js"></script>
+
     <!-- factories, controllers, etc. -->
     <script src="js/requestFactory.js"></script>
     <script src="js/newHuntFactory.js"></script>
@@ -41,6 +43,7 @@
     <script src="js/photos.js"></script>
     <script src="js/hunts.js"></script>
     <script src="js/newHunt.js"></script>
+    <script src="js/loginController.js"></script>
     <script src="js/app.js"></script>
   </head>
 
@@ -53,19 +56,12 @@
             -Scavenger Hunts view
             -Add a new photo or hunt (opens a sliding menu)
     -->
+     
+      </ion-header-bar>
+
+        <ion-nav-view></ion-nav-view>
 
     <ion-side-menus>
-      <ion-side-menu-content>
-      <ion-header-bar class="bar-royal">
-      <div class="button-bar">
-        <a ui-sref="pics" class="button button-icon ion-image"></a>
-        <a ui-sref="home" class="button button-icon ion-home"></a>
-        <a ng-click="toggleMenuRight()" class="button button-icon ion-plus"></a>
-      </div>
-      </ion-header-bar>
-        <ion-nav-view></ion-nav-view>
-      </ion-side-menu-content>
-
       <!-- slide-out menu -->
       <ion-side-menu side="right">
         <ion-header-bar class="bar-dark" ng-click="toggleMenuRight()">

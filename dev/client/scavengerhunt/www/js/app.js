@@ -15,19 +15,32 @@ angular.module('scavengerhunt', ['ionic',
                'scavengerhunt.photos',
                'scavengerhunt.hunts',
                'scavengerhunt.newhunts',
+               'scavengerhunt.login',
                'uiGmapgoogle-maps'])
 .config(function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/');
+  
+  openFB.init({appId: '371900856327943'});
 
   // hunts view (homepage)
-  $stateProvider.state('home', {
-    url: '/',
-    cache: false,
-    reload: true,
+  $stateProvider
+  .state('login', {
+    url: '/login',
+    // cache: false,
+    // reload: true,
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+  .state('home', {
+    url: 'home',
+    // cache: false,
+    // reload: true,
     templateUrl: 'templates/hunts.html',
     controller: 'HuntsCtrl'
   })
-
+  .state('profile', {
+    url: 'profile',
+    templateUrl: 'templates/profile.html'
+  })
   // photos view
   .state('pics', {
     url: 'pics',
@@ -64,6 +77,8 @@ angular.module('scavengerhunt', ['ionic',
     templateUrl: 'templates/newPhoto.html'
   });
 
+  $urlRouterProvider.otherwise('login');
+
 })
 .config(function($compileProvider) {
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
@@ -88,10 +103,12 @@ angular.module('scavengerhunt', ['ionic',
   });
   
   $scope.openModal = function() {
+    console.log("showing modal");
     $scope.modal.show();
   };
 
   $scope.closeModal = function() {
+    console.log("hidt it");
     $scope.modal.hide();
   };
 
