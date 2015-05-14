@@ -11,7 +11,6 @@ angular.module('scavengerhunt', ['ionic',
                'scavengerhunt.newhuntFactory',
                'scavengerhunt.photofact', 
                'scavengerhunt.huntfactory',
-               'scavengerhunt.camera',
                'scavengerhunt.photos',
                'scavengerhunt.hunts',
                'scavengerhunt.newhunts',
@@ -91,9 +90,9 @@ angular.module('scavengerhunt', ['ionic',
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, Camera, $cordovaFile, PhotoFact) {
+.controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, $cordovaFile, PhotoFact) {
   // Main Application Controller.
-   
+   console.log("ASDFASDFDAS");
   // Handles showing a modal. Currently unused, but may be used if you want to add a modal later.
   $ionicModal.fromTemplateUrl('templates/newhuntsmodal.html', {
     scope: $scope,
@@ -124,12 +123,7 @@ angular.module('scavengerhunt', ['ionic',
 
   // camera
   $scope.getPhoto = function() {
-    Camera.getPicture().then(function(imageURI) {
-      console.log(imageURI);
-      $scope.lastPhoto = imageURI;
-    }, function(err) {
-        console.err(err);
-    }, { quality: 75, targetWidth: 320, targetHeight: 320, saveToPhotoAlbum: false });
+    
   };
 
 
