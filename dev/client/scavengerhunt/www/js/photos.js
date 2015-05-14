@@ -1,7 +1,8 @@
-/* photos.js, PhotosCtrl
- *  - handles functionality for the photo view
- *  - uses modals to display single photo view
- */
+//photos.js, PhotosCtrl
+//----------------------
+ //handles functionality for the photo view
+ // uses modals to display single photo view
+ 
 angular.module('scavengerhunt.photos', [])
 .controller('PhotosCtrl', function($scope, $ionicModal, PhotoFact, $ionicLoading) {
   // get photos from factory
