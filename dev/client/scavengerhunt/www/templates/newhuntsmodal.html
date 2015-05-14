@@ -1,5 +1,5 @@
-<ion-view>
-  <ion-header-bar class="bar-dark bar-subheader">
+<ion-view> 
+  <ion-header-bar class="bar-dark"> 
     <button ng-click="resetHunt()" class="button" ui-sref="home">Cancel</button>
     <h1 class="title">New Hunt</h1>
   </ion-header-bar>
@@ -11,6 +11,14 @@
     <button ng-click="makeHunt(zipcode); zipcode=''" ui-sref="newhuntphotos" class="button button-royal button-block">Submit</button>
     <button ng-click="resetHunt()" ui-sref="home" class="button button-block">Cancel</button>
   </ion-content>
+  <ion-footer-bar class="bar-royal">
+    <div class="button-bar">
+      <a ui-sref="profile" class="button button-icon ion-person"></a>
+      <a ui-sref="pics" class="button button-icon ion-image"></a>
+      <a ui-sref="home" class="button button-icon ion-home"></a>
+      <a ui-sref="newhunt" class="button button-icon ion-plus"></a>
+    </div>
+  </ion-footer-bar>
 </ion-view>
 
 
