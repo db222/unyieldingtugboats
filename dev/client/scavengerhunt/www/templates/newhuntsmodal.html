@@ -16,7 +16,10 @@
     <label class="item item-input">
       <input type="text" ng-model="zipcode" placeholder="ex. 94102"></input>
     </label>
-    <button ng-click="makeHunt(zipcode); zipcode=''" ui-sref="newhuntphotos" class="button button-royal button-block">Submit</button>
+    <label class="item item-input">
+      <input type="text" ng-model="radius" placeholder="distance in miles"></input>
+    </label>
+    <button ng-click="makeHunt(zipcode, radius); zipcode=''" ui-sref="newhuntphotos" class="button button-royal button-block">Submit</button>
     <button ng-click="resetHunt()" ui-sref="home" class="button button-block">Cancel</button>
   </ion-content>
   <ion-footer-bar class="bar-dark">

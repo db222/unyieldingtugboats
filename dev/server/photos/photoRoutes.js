@@ -50,7 +50,9 @@ module.exports = function (app) {
 
 	//post req to photos/ has zipcode information; return the json of 30 closest photos
   app.post('/', function(req, res, next){
-	  photoUtils.getZipGPS(req.body.zipcode, req, res, next)	
+    var radius = parseInt(req.body.radius) * 1000;
+    console.log('POST photo with ZIP ',req.body.zipcode, radius);
+	  photoUtils.getZipGPS(req.body.zipcode, radius, req, res, next)	
   });
 
   //get req to photos/ returns the json of the 30 most recently added photos 
