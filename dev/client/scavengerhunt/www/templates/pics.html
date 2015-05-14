@@ -1,5 +1,13 @@
 <!-- photo feed view -->
 <ion-view>
+ <ion-header-bar class="bar-royal">
+    <div class="button-bar">
+      <a ui-sref="profile" class="button button-icon ion-person"></a>
+      <a ui-sref="pics" class="button button-icon ion-image"></a>
+      <a ui-sref="home" class="button button-icon ion-home"></a>
+      <a ui-sref="newhunt" class="button button-icon ion-plus"></a>
+    </div>
+  </ion-header-bar>
   <ion-content>
     <ion-list ng-repeat="photo in photos">
       <ion-item>
@@ -15,12 +23,10 @@
       </ion-item>
     </ion-list>
   </ion-content>
-  <ion-footer-bar class="bar-royal">
+ 
+  <ion-footer-bar class="bar-dark">
     <div class="button-bar">
-      <a ui-sref="profile" class="button button-icon ion-person"></a>
-      <a ui-sref="pics" class="button button-icon ion-image"></a>
-      <a ui-sref="home" class="button button-icon ion-home"></a>
-      <a ui-sref="newhunt" class="button button-icon ion-plus"></a>
+      <a ui-sref="newphoto" class="button button-icon ion-camera"></a>
     </div>
   </ion-footer-bar>
 </ion-view>
