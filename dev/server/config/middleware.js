@@ -13,6 +13,7 @@ module.exports = function (app, express) {
 
   // Enable localhost to localhost connections (CORS)
   app.all('/*', function(req, res, next) {
+    console.log(req.url);
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "origin, content-type, accept");
     next();

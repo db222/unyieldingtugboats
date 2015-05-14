@@ -6,8 +6,8 @@ angular.module('scavengerhunt.newhunts', [])
   $scope.zipcode = NewHuntFact.newHunt.zipcode;
 
   //initializes the hunt by setting the zipcode
-  $scope.makeHunt = function(zip) {
-    NewHuntFact.setZipCode(zip)
+  $scope.makeHunt = function(zip, radius) {
+    NewHuntFact.setZipCode(zip, radius)
   };
 
   //gets the photos from the entered zipcode and assigns them to a scope variable for display

@@ -18,27 +18,38 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+  Venari
 
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  A people-driven 'city crawl' app that allows users to find and explore lesser known hidden gems in their area.
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  Venari is a way for users to share and create adventures. Browse the main page for user-crafted photo tours to go on, or look through individual photos to make your own. Users can also upload their own photos that they or others can add to tours. Find new spaces and notice details in your environment that you normally wouldn't see.
 
 ## Problem ##
   > Describe the problem your product solves.
+  Many city guides focus on big things: monuments, famous restaurants, museums. But these big tourist spots can't truly capture the personality of the city, and for that there is Venari.
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
+  Venari is all about the details: little things that might not catch our eye unless we're looking for it but nonetheless make our experiences that much more valuable. Venari enhances your exploration and throws sharing into the mix: go on another user's tour, and add your own photos or tours so somebody else can find them too. Venari is people-driven and focuses on making you feel like a part of the area, and not just a tourist.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
+  "Many of our best memories aren't pre-planned: Venari doesn't try to give you a structured tour but rather delivers a general guideline around which to explore. See a neat architectural detail on your way to the park? Share that with others! We operate on the belief that even the tiniest details can contribute to an experience."
 
 ## How to Get Started ##
   > Describe how easy it is to get started.
+  All you need to get started with Venari is a sense of adventure. Simply enter the area you want to explore and find a tour that speaks to you, or tailor your own tour by browsing through other users' photos. Contribute to the community with your own photos, or by creating a tour of your own.
 
 ## Customer Quote ##
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  "I wanted a way to see the city without being too cliche, and Venari lead me to some amazing hidden gems."
+
+  "Even as an SF native, Venari gets me looking for details and places that I never would have found otherwise. I love having the opportunity to share my home with others."
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+  Adventure is out there; Venari is here to help you find it.

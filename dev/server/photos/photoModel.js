@@ -12,7 +12,7 @@ var PhotoSchema = new mongoose.Schema({
 		//[lng, lat]
 		type: [Number],  
 		//create the geospatial index
-		index: '2d' 
+		index: '2dsphere' 
 	}, 
 	//orientation of the photo from exif data
 	orientation: Number,
