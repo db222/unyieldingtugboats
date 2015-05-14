@@ -92,7 +92,7 @@ angular.module('scavengerhunt', ['ionic',
 })
 .controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, $cordovaFile, PhotoFact) {
   // Main Application Controller.
-   console.log("ASDFASDFDAS");
+
   // Handles showing a modal. Currently unused, but may be used if you want to add a modal later.
   $ionicModal.fromTemplateUrl('templates/newhuntsmodal.html', {
     scope: $scope,
