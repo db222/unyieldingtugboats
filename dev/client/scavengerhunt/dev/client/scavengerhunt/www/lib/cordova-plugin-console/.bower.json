@@ -1,0 +1,14 @@
+{
+  "name": "cordova-plugin-console",
+  "homepage": "https://github.com/apache/cordova-plugin-console",
+  "_release": "8a119c5c67",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8a119c5c67e7e5bcd14223ceb387210f33c69b3b"
+  },
+  "_source": "https://github.com/apache/cordova-plugin-console.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/apache/cordova-plugin-console.git",
+  "_direct": true
+}
