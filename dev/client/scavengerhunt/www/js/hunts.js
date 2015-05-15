@@ -11,7 +11,8 @@ angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps', 'ionic.rating'])
     $scope.hunts = hunts
   });
 
-    var resetReviewInfo = function() {
+
+  var resetReviewInfo = function() {
     $scope.score = 3;
     $scope.maxScore = 5;
   };

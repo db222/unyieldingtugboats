@@ -13,6 +13,7 @@ angular.module('scavengerhunt', ['ionic',
                'scavengerhunt.huntfactory',
                'scavengerhunt.photos',
                'scavengerhunt.hunts',
+               'scavengerhunt.newPhoto',
                'scavengerhunt.newhunts',
                'scavengerhunt.login',
                'uiGmapgoogle-maps'])
@@ -73,7 +74,8 @@ angular.module('scavengerhunt', ['ionic',
   // add new photo 
   .state('newphoto', {
     url: 'newphoto',
-    templateUrl: 'templates/newPhoto.html'
+    templateUrl: 'templates/newPhoto.html',
+    controller: 'NewPhotoCtrl'
   });
 
   $urlRouterProvider.otherwise('login');
@@ -122,14 +124,14 @@ angular.module('scavengerhunt', ['ionic',
 
 })
 .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
+  // $ionicPlatform.ready(function() {
+  //   // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+  //   // for form inputs)
+  //   if(window.cordova && window.cordova.plugins.Keyboard) {
+  //     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+  //   }
+  //   if(window.StatusBar) {
+  //     StatusBar.styleDefault();
+  //   }
+  // });
+});

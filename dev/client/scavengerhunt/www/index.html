@@ -42,6 +42,7 @@
     <script src="js/openfb.js"></script>
 
     <!-- factories, controllers, etc. -->
+    <script src="js/newPhoto.js"></script>
     <script src="js/requestFactory.js"></script>
     <script src="js/newHuntFactory.js"></script>
     <script src="js/PhotoFactory.js"></script>
@@ -64,24 +65,7 @@
             -Add a new photo or hunt (opens a sliding menu)
     -->
 
-      </ion-header-bar>
-
         <ion-nav-view></ion-nav-view>
-
-    <ion-side-menus>
-      <!-- slide-out menu -->
-      <ion-side-menu side="right">
-        <ion-header-bar class="bar-dark" ng-click="toggleMenuRight()">
-          <h1 class="title">Create new:</h1>
-        </ion-header-bar>
-        <ion-content>
-          <ion-list>
-            <ion-item ng-click="toggleMenuRight()" ui-sref="newhunt">Scavenger Hunt</ion-item>
-            <ion-item ng-click="toggleMenuRight(); getPhoto()" ui-sref="newphoto">Photo</ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-side-menu>
-    </ion-side-menus>
   </body>
 
 </html>

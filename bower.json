@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "angular-google-maps": "~2.1.0",
-    "ngCordova": "~0.1.15-alpha"
+    "ngCordova": "~0.1.15-alpha",
+    "ionic-rating": "~0.1.0"
   }
 }

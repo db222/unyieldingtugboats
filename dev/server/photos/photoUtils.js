@@ -130,6 +130,7 @@ module.exports = {
 			if (err) {
 				return res.status(500).json(err);
 			}
+			console.log(photos);
 			res.status(200).json(photos);
 		});
 	},
@@ -157,6 +158,7 @@ module.exports = {
 	},
 	
 	fns : function (req, res, next){
+		console.log("Photo uploaded.");
 		res.writeHead(300);
 		res.end('you uploaded a photo');
 	}
