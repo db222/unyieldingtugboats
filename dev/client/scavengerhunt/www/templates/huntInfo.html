@@ -15,11 +15,16 @@
     <rating ng-model="score" max="maxScore"></rating>
     
     <span class="input-label">Comment(s) : </span>
-    <label class="item item-input">
+    <label class="item item-input ">
         <input type="text" ng-model='comment' placeholder='This hunt was ...'>
     </label>
     <button ng-click="submitReview(comment, score)" class="button button-royal button-block">Submit!</button>
     <br>
+
+    <h4>Comments </h4>
+    <ion-list ng-repeat='comment in selectedHunt.comments track by $index'>
+      <ion-item><img class='comment'>{{comment}}</ion-item>
+    </ion-list>
 
     <ion-list ng-repeat="photo in selectedHunt.photos">
       <ion-item><img class="photo" rotate orientation='{{photo.orientation}}' src="{{photo.src}}"></ion-item>

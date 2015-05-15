@@ -69,6 +69,12 @@ angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps', 'ionic.rating'])
 
     request.request('/api/hunts/review', reviewedHunt, function(response) {
       console.log('successfully added a review!', response);
+      for(var i = 0; i < $scope.hunts.length; ++i) {
+        if($scope.hunts[i]._id === response._id) {
+          $scope.hunts[i] = response;
+          return;
+        }
+      }
     });
 
     resetReviewInfo();

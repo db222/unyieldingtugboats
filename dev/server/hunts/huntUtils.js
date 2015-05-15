@@ -84,7 +84,8 @@ module.exports = {
           }
           else {
             console.log('success on saving review!');
-            next();
+            res.writeHead(201);
+            res.end(JSON.stringify(hunt));
           }
         })
       }

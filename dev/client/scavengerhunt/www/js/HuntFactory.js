@@ -14,7 +14,7 @@ angular.module('scavengerhunt.huntfactory', [])
       }
 
       //uses request Factory to send request to back end
-      request.request('http://johnpizzo.me:3000/api/hunts' + zipCode, null, function(data) {
+      request.request('http://127.0.0.1:3000/api/hunts' + zipCode, null, function(data) {
         callback(data);
       });
     }
