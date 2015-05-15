@@ -10,7 +10,7 @@ angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps'])
   HuntFact.getHunts(null, function(hunts) {
     $scope.hunts = hunts
   });
-
+console.log("LOGGED");
 
   // Get all hunts from certain zip code
   $scope.filterByZip = function(zip) {
