@@ -94,30 +94,6 @@ angular.module('scavengerhunt', ['ionic',
 })
 .controller('AppCtrl', function($ionicModal, $ionicSideMenuDelegate, $scope, NewHuntFact, $cordovaFile, PhotoFact) {
   // Main Application Controller.
-
-  // Handles showing a modal. Currently unused, but may be used if you want to add a modal later.
-  $ionicModal.fromTemplateUrl('templates/newhuntsmodal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  
-  $scope.openModal = function() {
-    console.log("showing modal");
-    $scope.modal.show();
-  };
-
-  $scope.closeModal = function() {
-    console.log("hidt it");
-    $scope.modal.hide();
-  };
-
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-
-
   // Toggles the side menu (top-right button, used for adding new hunts/photos)
   $scope.toggleMenuRight = function() {
     $ionicSideMenuDelegate.toggleRight();
