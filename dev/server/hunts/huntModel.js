@@ -10,7 +10,11 @@ var HuntSchema = new mongoose.Schema({
 	info: String, 
 	tags: Array, 
 	region: Number,
-	date: { type: Date, default: Date.now } 
+	date: { type: Date, default: Date.now },
+    comments: [],
+    totalReviews : Number,
+    accumulatedScore : Number,
+    averageScore : Number
 });
 
 module.exports = mongoose.model('Hunt', HuntSchema);

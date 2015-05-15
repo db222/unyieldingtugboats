@@ -4,13 +4,19 @@
  // gets hunt data from HuntFactory
  // uses modals to show individual hunt views
 
-angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps'])
-.controller('HuntsCtrl', function($scope, $ionicModal, HuntFact) {
+angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps', 'ionic.rating'])
+.controller('HuntsCtrl', function($scope, $ionicModal, HuntFact, request) {
   // hunt data from database
   HuntFact.getHunts(null, function(hunts) {
     $scope.hunts = hunts
   });
 
+    var resetReviewInfo = function() {
+    $scope.score = 3;
+    $scope.maxScore = 5;
+  };
+
+  resetReviewInfo();
 
   // Get all hunts from certain zip code
   $scope.filterByZip = function(zip) {
@@ -34,12 +40,40 @@ angular.module('scavengerhunt.hunts', ['uiGmapgoogle-maps'])
 
   // selectedHunt is set when modal is opened
   $scope.selectedHunt = null;
+  $scope.activeModal = null;
 
-  $scope.openModal = function(index) {
+  $scope.openModal = function(index, modalType) {
+    switch(modalType) {
+      case 'HUNT_DETAILS' : $scope.openHuntDetailsModal(index);
+        break;
+      default: console.log('WHAT HAVE YOU DONE! ' + modalType + 'does not have an assoicated')
+    }
+  };
+
+  $scope.openHuntDetailsModal = function(index) {
     $scope.selectedHunt = $scope.hunts[index];
+    $scope.score = $scope.selectedHunt.averageScore;
     $scope.setMap($scope.selectedHunt.cover.lat, $scope.selectedHunt.cover.lon);
     $scope.modal.show();
+    $scope.activeModal = $scope.modal;
   };
+
+  $scope.submitReview = function(comment,score) {
+    var reviewedHunt = {  
+              comment : comment,
+              rating : { score : score,
+                         maxScore : $scope.maxScore
+                      },
+              hunt : $scope.selectedHunt
+            };
+
+    request.request('/api/hunts/review', reviewedHunt, function(response) {
+      console.log('successfully added a review!', response);
+    });
+
+    resetReviewInfo();
+    $scope.closeModal();
+  }
   
   $scope.closeModal = function() {
     $scope.modal.hide();

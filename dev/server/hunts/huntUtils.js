@@ -57,6 +57,44 @@ module.exports = {
        }
     });
   },
+  
+  updateReview: function(req,res,next) {
+    Hunts.findOne({_id :req.body.hunt._id}, function(err, hunt) {
+      if(err) {
+        console.log('error in search parameters for query');
+        res.writeHead(404)
+        res.end('query for hunt failed in review update');
+      }
+      else if(hunt) {
+        if(req.body.comment) {
+          hunt.comments = hunt.comments || [];
+          hunt.comments.push(req.body.comment);
+        }
+        hunt.totalReviews = hunt.totalReviews || 0;
+        hunt.totalReviews++;
+        hunt.accumulatedScore = hunt.accumulatedScore || 0;
+        hunt.accumulatedScore += req.body.rating.score;
+        hunt.averageScore = hunt.averageScore || 0;
+        hunt.averageScore = hunt.accumulatedScore / hunt.totalReviews;
+        hunt.save(function(err, hunt) {
+          if(err) {
+            console.log('error in saving review', err)
+            res.writeHead(505)
+            res.end('error in saving to database')
+          }
+          else {
+            console.log('success on saving review!');
+            next();
+          }
+        })
+      }
+      else {
+        console.log('query did not find results');
+        res.writeHead(404)
+        res.end('query did not find results')
+      }
+    });
+  },
 
   // End request with proper code and response data
   fns: function(req, res){
