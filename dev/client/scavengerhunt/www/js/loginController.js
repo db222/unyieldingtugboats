@@ -1,8 +1,9 @@
 angular.module('scavengerhunt.login', [])
 
-.controller('LoginCtrl', function($state, $scope, $ionicModal, $timeout) {
+.controller('LoginCtrl', function($state, $scope, $ionicModal, $timeout, request) {
   // Form data for the login modal
   $scope.loginData = {};
+  var userInfo = $scope.loginData;
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -11,23 +12,33 @@ angular.module('scavengerhunt.login', [])
     $scope.modal = modal;
   });
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $state.go('home');
-    //$scope.modal.show();
-    // $scope.modal.hide();
+  // Triggered when it's a new users creating a profile.
+  $scope.newUserLogin = function() {
 
-    // $rootScope.$on('$stateChangeStart', 
-    //     function(event, toState, toParams, fromState, fromParams){ 
-    // // do something
-    // })
+    console.log("New user data: ", $scope.loginData);
+
+    request.request('/api/users/newUser', userInfo, function(response) {
+      console.log('made a new user! ', response);
+      if(response === 'userCode'){
+        $scope.closeLogin(); 
+      }
+    });
   };
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
+
+
+  // Perform the login action when the user submits the login form
+  $scope.doLogin = function() {
+    console.log("accessed doLogin function");
+    request.request('api/users/loginUser', userInfo, function(response) {
+      console.log('Welcome back User: ', response[0].username);
+      if(response[0].username === userInfo.username) {
+        $scope.closeLogin();
+      }
+    });
   };
 
+  //triggered when the user logs in thru facebook
   $scope.fbLogin = function() {
     openFB.login(function(response) {
           if (response.status === 'connected') {
@@ -38,16 +49,14 @@ angular.module('scavengerhunt.login', [])
           }
         },
     {scope: 'email,publish_actions'});
-  }
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
   };
+
+  // Triggered in the login modal to close it
+  $scope.closeLogin = function() {
+    $state.go('home');
+  };
+
 });
+
+
+

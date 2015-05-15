@@ -7,6 +7,7 @@ module.exports = function (app, express) {
 
   var huntRouter = express.Router();
   var photoRouter = express.Router();
+  var userRouter = express.Router();
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
@@ -21,12 +22,16 @@ module.exports = function (app, express) {
   // use hunt router for all user request
   app.use('/api/hunts', huntRouter); 
   
-  // user photo router for link request
-  app.use('/api/photos', photoRouter); 
+  // use photo router for link request
+  app.use('/api/photos', photoRouter);
+
+  // use user router for logging in
+  app.use('/api/users', userRouter);
 
   // inject our routers into their respective route files
   require('../hunts/huntRoutes.js')(huntRouter);
   require('../photos/photoRoutes.js')(photoRouter);
+  require('../users/userRoutes.js')(userRouter);
 
   console.log('loaded middleware');
 };

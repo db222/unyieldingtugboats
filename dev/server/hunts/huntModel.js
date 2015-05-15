@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // Hunt Database Schema
-// --------------------
+// -------------------- 
 
 //hunts collection will store hunts created by users; cover object is photo shown on home page; region is zipcode
 var HuntSchema = new mongoose.Schema({
